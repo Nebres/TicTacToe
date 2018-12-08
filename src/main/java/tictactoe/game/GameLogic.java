@@ -1,6 +1,6 @@
 package tictactoe.game;
 
-import static tictactoe.game.OutputMessage.OCCUPIED_FIELD;
+import static tictactoe.game.OutputMessage.*;
 
 
 public class GameLogic {
@@ -12,8 +12,8 @@ public class GameLogic {
     private final EndRoundValidator endRoundValidator;
     private boolean isCpuTurn;
     private int turn;
-    private int round = 0;
-    private boolean isStart = true;
+    private int round;
+    private boolean isGameJustStart = true;
 
     public GameLogic(Board board, GameConfig gameConfig, FieldCommand fieldCommand, AiLogic aiLogic,
                      EndRoundValidator endRoundValidator) {
@@ -26,7 +26,11 @@ public class GameLogic {
 
     private void initRound(){
         board.initEmptyBoard();
-        this.isCpuTurn = gameConfig.isCpuBegin();
+        this.isCpuTurn = gameConfig.getInstance().isCpuBegin();
+        endRoundValidator.setCpuWin(false);
+        endRoundValidator.setDraw(false);
+        endRoundValidator.setEndRound(false);
+        endRoundValidator.setPlayerWin(false);
         this.turn ++;
     }
 
@@ -43,7 +47,7 @@ public class GameLogic {
     }
 
     private void beginTurnInfo() {
-        System.out.println("Round: " + round + "Turn: " + turn);
+        System.out.println(String.format(TURN_INF0, round, turn));
     }
 
     private void gameLoop() {
@@ -52,7 +56,8 @@ public class GameLogic {
             beginTurnInfo();
 
             if (!isCpuTurn) {
-                board.drawBoard();
+                System.out.println("PLAYER TURN \n");
+                if (turn == 1)board.drawBoard();
                 fieldCommand.updateRow();
                 fieldCommand.updateColumn();
                 validateIsNotOccupied();
@@ -60,34 +65,35 @@ public class GameLogic {
                 board.drawBoard();
                 endRoundValidator.checkIsDraw();
                 endRoundValidator.checkWinCondition();
-                isCpuTurn = true;
+                setCpuTurn(true);
                 if (gameConfig.isCpuBegin()) {
-                    this.turn++;
+                   this.turn ++;
                 }
             } else {
+                System.out.println("CPU TURN \n");
                 aiLogic.aiRun();
                 validateIsNotOccupied();
                 board.updateBoard(fieldCommand.getRow(), fieldCommand.getColumn(), Marks.cpuMark);
                 board.drawBoard();
                 endRoundValidator.checkIsDraw();
                 endRoundValidator.checkWinCondition();
-                isCpuTurn = false;
+                setCpuTurn(false);
                 if (!gameConfig.isCpuBegin()) {
-                    this.turn++;
+                    this.turn ++;
                 }
             }
         }
-        System.out.println("End Round"); //here will be added text about win/ lost/ draw
+        System.out.println(String.format(END_ROUND, round)); //here will be added text about win/ lost/ draw
         this.round ++;
-        this.turn = 0;
+        setTurn(1);
     }
 
     public void gameRun() {
-        if (isStart) {
+        if (isGameJustStart) {
             GameConfig.getInstance().initGameConfig();
             board.initEmptyBoard();
             this.round ++;
-            this.isStart = false;
+            setGameJustStart(false);
         }
 
         while (round <= GameConfig.getInstance().getNumberOfRounds()) {
@@ -95,9 +101,21 @@ public class GameLogic {
             gameLoop();
         }
 
-        System.out.println("End Game");
+        System.out.println(END_GAME);
         //here will be added field to storage round wining
     }
 
-//here will be added logic to change start player each turn
+    public void setCpuTurn(boolean cpuTurn) {
+        isCpuTurn = cpuTurn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public void setGameJustStart(boolean gameJustStart) {
+        isGameJustStart = gameJustStart;
+    }
+
+    //here will be added logic to change start player each turn
 }

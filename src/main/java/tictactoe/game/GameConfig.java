@@ -14,6 +14,10 @@ public class GameConfig {
     private static Scanner scan = new Scanner(System.in);
     private static final Random GENERATOR = new Random();
 
+    public GameConfig() {
+        this.isCpuBegin = GENERATOR.nextBoolean();
+    }
+
     public static GameConfig getInstance() {
         if (gameConfigInstance == null) {
             synchronized(GameConfig.class) {
@@ -62,15 +66,10 @@ public class GameConfig {
         }
     }
 
-    private void configIsCpuBegin() {
-        this.isCpuBegin = GENERATOR.nextBoolean();
-    }
-
     public void initGameConfig() {
         configNick();
         configDifficultLevel();
         configNumbersOfRounds();
-        configIsCpuBegin();
         System.out.println(String.format(FINAL_CONFIG, getNick(), getNumberOfRounds(), isHardLevel(), isHardLevel()));
     }
 

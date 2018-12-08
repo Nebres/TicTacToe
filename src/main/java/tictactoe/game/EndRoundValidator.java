@@ -111,6 +111,22 @@ public class EndRoundValidator {
         return isDraw;
     }
 
+    public void setEndRound(boolean endRound) {
+        isEndRound = endRound;
+    }
+
+    public void setPlayerWin(boolean playerWin) {
+        isPlayerWin = playerWin;
+    }
+
+    public void setCpuWin(boolean cpuWin) {
+        isCpuWin = cpuWin;
+    }
+
+    public void setDraw(boolean draw) {
+        isDraw = draw;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

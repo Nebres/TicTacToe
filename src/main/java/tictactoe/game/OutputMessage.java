@@ -32,5 +32,8 @@ public interface OutputMessage {
     String WRONG_ROW_UPDATE = "Wrong Row number. Pleas note You must type number between 1 to 3. Try Again";
     String WRONG_COLUMN_UPDATE = "Wrong Column number. Pleas note You must type number between 1 to 3. Try Again";
     String OCCUPIED_FIELD = "You choose field that is already occupied. Try again";
+    String END_GAME = "End Game \n";
+    String END_ROUND = "End Round %d";
+    String TURN_INF0 = "\n Round: %d Turn: %d";
 
 }
