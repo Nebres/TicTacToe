@@ -52,10 +52,6 @@ public class Board {
         }
     }
 
-    public Map<Integer, ArrayList<Marks>> getBoard() {
-        return this.gameBoard;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
